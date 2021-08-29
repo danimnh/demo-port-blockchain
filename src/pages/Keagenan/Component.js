@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Link as RouterLink } from "react-router-dom";
 // import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import moment from "moment";
@@ -33,17 +32,13 @@ import QRCode from "qrcode.react";
 import Meta from "components/Meta";
 import { useHistory } from "react-router-dom";
 
-import getUsername from "../../constants/GetUsername";
-import getUserOrgName from "../../constants/GetUserOrgName";
-
 import useStyles from "./styles";
 import { withStyles } from "@material-ui/core/styles";
 
-function InboxTrx(props) {
+function Keagenan(props) {
   const classes = useStyles();
   const { listType } = props.match.params;
-  const [memberCode, setMemberCode] = React.useState("");
-  const [user, setUser] = React.useState({ username: "", orgName: "" });
+  const [rowsType, setRowsType] = React.useState("");
   const [inboxTrx, setInboxTrx] = React.useState([]);
   const [visible, setVisible] = React.useState(false);
   const [visibleReject, setVisibleReject] = React.useState(false);
@@ -74,40 +69,17 @@ function InboxTrx(props) {
   function createData(name, value) {
     return { name, value };
   }
-  const rowsPenangkar = [
-    createData("Username Pengirim", modalContent.usernamePengirim),
-    createData("Alamat Pengirim", modalContent.alamatPengirim),
-    createData("Username Penerima", modalContent.usernamePenerima),
-    createData("Alamat Penerima", modalContent.alamatPenerima),
-    createData("Kuantitas", modalContent.kuantitasBenihKg + " Kg"),
-    createData(
-      "Harga Benih",
-      <NumberFormat
-        displayType="text"
-        value={modalContent.hargaBenihPerKg}
-        decimalSeparator={","}
-        thousandSeparator={"."}
-        isNumericString
-        prefix="Rp. "
-      />
-    ),
-    createData(
-      "Tanggal Transaksi",
-      moment.unix(modalContent.createdAt).format("LLL")
-    ),
-    createData("Umur Benih", modalContent.umurBenih + " Hari"),
-    createData("Umur Panen", modalContent.umurPanen + " Hari"),
-    createData("Lama Penyimpanan", modalContent.lamaPenyimpanan + " Hari"),
-    createData("Varietas", modalContent.varietas),
-    createData(
-      "Status",
-      modalContent.isConfirmed ? "Terkonfirmasi oleh Penerima" : "Tertunda"
-    ),
+  const rowsPermohonan = [
+    createData("Diteruskan kepada", "Bidang Lala"),
+    createData("Jenis Warta", modalContent.wartaType),
+    createData("Trayek", modalContent.trayek),
+    createData("No. RPK/PKKA/PPKN", modalContent.noRPK),
+    createData("Status", modalContent.isPKApproved ? "Disetujui" : "Tertunda"),
   ];
-  const rowsPetani = [
-    createData("Username Pengirim", modalContent.usernamePengirim),
+  const rowsWarta = [
+    createData("No. Pelayanan", modalContent.noPelayanan),
     createData("Alamat Pengirim", modalContent.alamatPengirim),
-    createData("Username Penerima", modalContent.usernamePenerima),
+    createData("Bendera", modalContent.bendera),
     createData("Alamat Penerima", modalContent.alamatPenerima),
     createData("Kuantitas Bawang", modalContent.kuantitasBawangKg + " Kg"),
     createData(
@@ -132,59 +104,6 @@ function InboxTrx(props) {
     createData("Perlakuan", modalContent.perlakuan),
     createData("Produktivitas", modalContent.produktivitas),
 
-    createData(
-      "Status",
-      modalContent.isConfirmed ? "Terkonfirmasi oleh Penerima" : "Tertunda"
-    ),
-  ];
-  const rowsPengumpul = [
-    createData("Username Pengirim", modalContent.usernamePengirim),
-    createData("Alamat Pengirim", modalContent.alamatPengirim),
-    createData("Username Penerima", modalContent.usernamePenerima),
-    createData("Alamat Penerima", modalContent.alamatPenerima),
-    createData("Kuantitas Bawang", modalContent.kuantitasBawangKg + " Kg"),
-    createData(
-      "Harga Bawang",
-      <NumberFormat
-        displayType="text"
-        value={modalContent.hargaBawangPerKg}
-        decimalSeparator={","}
-        thousandSeparator={"."}
-        isNumericString
-        prefix="Rp. "
-      />
-    ),
-    createData(
-      "Tanggal Transaksi",
-      moment.unix(modalContent.createdAt).format("LLL")
-    ),
-    createData(
-      "Tanggal Masuk",
-      moment.unix(modalContent.tanggalMasuk).format("LLL")
-    ),
-    createData("Teknik Sorting", modalContent.teknikSorting),
-    createData("Metode Pengemasan", modalContent.metodePengemasan),
-
-    createData(
-      "Status",
-      modalContent.isConfirmed ? "Terkonfirmasi oleh Penerima" : "Tertunda"
-    ),
-  ];
-  const rowsPedagang = [
-    createData("Username Pengirim", modalContent.usernamePengirim),
-    createData("Username Penerima", modalContent.usernamePenerima),
-    createData("Alamat Pengirim", modalContent.alamatPengirim),
-    createData("Alamat Penerima", modalContent.alamatPenerima),
-    createData("Kuantitas", modalContent.kuantitas),
-    createData("Harga", modalContent.harga),
-    createData(
-      "Tanggal Transaksi",
-      moment.unix(modalContent.createdAt).format("LLL")
-    ),
-    createData("Tanggal Masuk", modalContent.umurBenih),
-    createData("Alamat Gudang", modalContent.umurPanen),
-    createData("Teknik Sorting", modalContent.lamaPenyimpanan),
-    createData("Metode Pengemasan", modalContent.varietas),
     createData(
       "Status",
       modalContent.isConfirmed ? "Terkonfirmasi oleh Penerima" : "Tertunda"
@@ -221,7 +140,7 @@ function InboxTrx(props) {
     },
   }))(TableRow);
 
-  const fetchAllInboxTrx = async (trxType, username, isConfirmed) => {
+  const fetchAllKeagenanPendingTrx = async () => {
     try {
       let config = {
         headers: {
@@ -229,23 +148,18 @@ function InboxTrx(props) {
         },
         params: {
           peer: "peer0.penangkar.example.com",
-          fcn: "GetBawangForQuery",
+          fcn: "GetDokumenForQuery",
           args:
             '["' +
-            '{\\"selector\\":{\\"username' +
-            trxType +
-            '\\":\\"' +
-            username +
-            '\\",\\"isConfirmed\\":' +
-            isConfirmed +
-            ',\\"isRejected\\":false' +
+            '{\\"selector\\":{\\"IsPKApproved\\":' +
+            "false" +
             "}}" +
             '"]',
         },
       };
       console.log(config.params.args);
       const resp = await axios.get(
-        "/sc/channels/mychannel/chaincodes/bawangmerah_cc",
+        "/sc/channels/mychannel/chaincodes/bcport_cc",
         config
       );
       console.log(resp);
@@ -257,6 +171,36 @@ function InboxTrx(props) {
     }
   };
 
+  const fetchAllKeagenanApprovedTrx = async () => {
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ` + localStorage.getItem("token"),
+        },
+        params: {
+          peer: "peer0.penangkar.example.com",
+          fcn: "GetDokumenForQuery",
+          args:
+            '["' +
+            '{\\"selector\\":{\\"IsPKApproved\\":' +
+            "true" +
+            "}}" +
+            '"]',
+        },
+      };
+      console.log(config.params.args);
+      const resp = await axios.get(
+        "/sc/channels/mychannel/chaincodes/bcport_cc",
+        config
+      );
+      console.log(resp);
+      console.log(config.params);
+      return resp.data.result;
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  };
   const rejectTrxByID = async (
     sourceTrxId,
     kuantitas,
@@ -302,20 +246,20 @@ function InboxTrx(props) {
     };
 
     let body = {
-      fcn: "ConfirmTrxByID",
+      fcn: "ApprovePermohonanKeagenan",
       peers: [
         "peer0.penangkar.example.com",
         "peer0.petani.example.com",
         "peer0.pengumpul.example.com",
         "peer0.pedagang.example.com",
       ],
-      chaincodeName: "bawangmerah_cc",
+      chaincodeName: "bcport_cc",
       channelName: "mychannel",
       args: [trxId],
     };
     try {
       const resp = await axios.post(
-        "/sc/channels/mychannel/chaincodes/bawangmerah_cc",
+        "/sc/channels/mychannel/chaincodes/bcport_cc",
         body,
         config
       );
@@ -327,61 +271,38 @@ function InboxTrx(props) {
     }
   };
   useEffect(() => {
-    getUsername()
-      .then((result) => {
-        let stateCopy = user;
-        stateCopy.username = result;
-        setUser(stateCopy);
-      })
-      .finally(() => {
-        getUserOrgName()
-          .then((result) => {
-            let stateCopy = user;
-            stateCopy.orgName = result;
-            console.log(stateCopy);
-            setUser(stateCopy);
-          })
-          .finally(() => {
-            setMemberCode(user.orgName);
-            if (listType === "pending") {
-              // fetchAllInboxTrx("Penerima", user.username, "false").then(
-              //   (result) => {
-              //     let sorted = result;
-              //     console.log("INBOX PENDING");
-              //     const after = sorted.sort((a, b) =>
-              //       a.Record.createdAt > b.Record.createdAt ? -1 : 1
-              //     );
-              //     setInboxTrx([]);
-              //     setInboxTrx(after);
-              //   }
-              // );
-            } else if (listType === "confirmed") {
-              // fetchAllInboxTrx("Penerima", user.username, "true").then(
-              //   (result) => {
-              //     let sorted = result;
-              //     console.log("INBOX CONFIRMED");
-              //     const after = sorted.sort((a, b) =>
-              //       a.Record.createdAt > b.Record.createdAt ? -1 : 1
-              //     );
-              //     setInboxTrx([]);
-              //     setInboxTrx(after);
-              //   }
-              // );
-            }
-          });
+    if (listType === "pending") {
+      fetchAllKeagenanPendingTrx(listType).then((result) => {
+        let sorted = result;
+        const after = sorted.sort((a, b) =>
+          a.Record.createdAt > b.Record.createdAt ? -1 : 1
+        );
+        setInboxTrx([]);
+        setInboxTrx(after);
       });
+    } else if (listType === "approved") {
+      fetchAllKeagenanApprovedTrx(listType).then((result) => {
+        let sorted = result;
+        const after = sorted.sort((a, b) =>
+          a.Record.createdAt > b.Record.createdAt ? -1 : 1
+        );
+        setInboxTrx([]);
+        setInboxTrx(after);
+      });
+    }
+
     // eslint-disable-next-line
   }, [listType]);
   return (
     <>
       <Meta title="TransactionList" description="TransactionList" />
       <Container maxWidth="sm" className={classes.root}>
-        <Typography variant="h6">Layanan</Typography>
+        <Typography variant="h6">Keagenan</Typography>
 
-        {props.match.params.listType === "kedatangan" ? (
-          <Typography variant="h6">Kedatangan Kapal</Typography>
+        {props.match.params.listType === "pending" ? (
+          <Typography variant="h6">Belum diproses</Typography>
         ) : (
-          <Typography variant="h6">Keberangkatan Kapal</Typography>
+          <Typography variant="h6">Sudah diproses</Typography>
         )}
 
         {inboxTrx.length !== 0 ? (
@@ -389,14 +310,14 @@ function InboxTrx(props) {
         ) : (
           <p>Tidak ada catatan</p>
         )}
-        <Button
+        {/* <Button
           component={RouterLink}
-          to="/"
+          to={"/layanan/" + listType + "/create"}
           variant="contained"
           color="primary"
         >
           Buat Permohonan Warta {listType}
-        </Button>
+        </Button> */}
         {inboxTrx.map((trx) => {
           return (
             <>
@@ -409,6 +330,11 @@ function InboxTrx(props) {
                   onClick={() => {
                     console.log(trx.Record);
                     setModalContent(trx.Record);
+                    if (trx.Record.wartaID !== "") {
+                      setRowsType("Warta");
+                    } else {
+                      setRowsType("Permohonan");
+                    }
                     setVisible(true);
                   }}
                 >
@@ -419,14 +345,22 @@ function InboxTrx(props) {
                       style={{ justifyContent: "space-between" }}
                     >
                       <Grid>
-                        <Typography className={classes.title}>
-                          Pengiriman dari {trx.Record.usernamePengirim}
-                        </Typography>
+                        {trx.Record.wartaID !== "" ? (
+                          <Typography className={classes.title}>
+                            Warta
+                          </Typography>
+                        ) : (
+                          <Typography className={classes.title}>
+                            Permohonan Warta
+                          </Typography>
+                        )}
 
                         <Typography>
                           {moment.unix(trx.Record.createdAt).format("LLL")}
                         </Typography>
-                        <Typography>{trx.Record.varietas}</Typography>
+                        <Typography>
+                          {trx.isPKApproved ? "Disetujui" : "Tertunda"}
+                        </Typography>
                       </Grid>
                       <QRCode value={trx.Record.id} size={52} />
                     </Grid>
@@ -437,7 +371,7 @@ function InboxTrx(props) {
           );
         })}
         <Dialog open={visible} onClose={handleClose}>
-          <DialogTitle>Dialog Title</DialogTitle>
+          <DialogTitle>Detail Dokumen</DialogTitle>
           <DialogContent>
             <TableContainer component={Paper}>
               <Table className={classes.table} aria-label="simple table">
@@ -448,49 +382,30 @@ function InboxTrx(props) {
                   </StyledTableRow>
                 </TableHead>
                 <TableBody>
-                  {memberCode === "Petani"
-                    ? rowsPenangkar.map((row) => (
-                        <StyledTableRow key={row.name}>
-                          <StyledTableCell align="left">
-                            {row.name}
-                          </StyledTableCell>
-                          <StyledTableCell align="left">
-                            {row.value}
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      ))
-                    : memberCode === "Pengumpul"
-                    ? rowsPetani.map((row) => (
-                        <StyledTableRow key={row.name}>
-                          <StyledTableCell align="left">
-                            {row.name}
-                          </StyledTableCell>
-                          <StyledTableCell align="left">
-                            {row.value}
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      ))
-                    : memberCode === "Pedagang"
-                    ? rowsPengumpul.map((row) => (
-                        <StyledTableRow key={row.name}>
-                          <StyledTableCell align="left">
-                            {row.name}
-                          </StyledTableCell>
-                          <StyledTableCell align="left">
-                            {row.value}
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      ))
-                    : rowsPedagang.map((row) => (
-                        <StyledTableRow key={row.name}>
-                          <StyledTableCell align="left">
-                            {row.name}
-                          </StyledTableCell>
-                          <StyledTableCell align="left">
-                            {row.value}
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      ))}
+                  {rowsType === "Permohonan" &&
+                    rowsPermohonan.map((row) => (
+                      <StyledTableRow key={row.name}>
+                        <StyledTableCell align="left">
+                          {row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.value}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+
+                  {rowsType === "Warta" &&
+                    rowsWarta.map((row) => (
+                      <StyledTableRow key={row.name}>
+                        <StyledTableCell align="left">
+                          {row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.value}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+
                   <StyledTableCell align="left">ID Transaksi</StyledTableCell>
                   <StyledTableCell align="left">
                     <QRCode id="qrCodeEl" value={modalContent.id} size={128} />
@@ -574,39 +489,18 @@ function InboxTrx(props) {
             variant="contained"
             color="secondary"
             onClick={() => {
-              if (memberCode === "Petani") {
-                console.log(modalContent.benihAsetID);
-                console.log(modalContent.kuantitasBenihKg);
-                console.log(modalContent.txID1);
-                rejectTrxByID(
-                  modalContent.benihAsetID,
-                  modalContent.kuantitasBenihKg,
-                  modalContent.txID1,
-                  rejectReason
-                );
-              } else if (memberCode === "Pengumpul") {
-                console.log(modalContent.bawangAsetID);
-                console.log(modalContent.kuantitasBawangKg);
-                console.log(modalContent.txID2);
-                console.log(rejectReason);
-                rejectTrxByID(
-                  modalContent.bawangAsetID,
-                  modalContent.kuantitasBawangKg,
-                  modalContent.txID2,
-                  rejectReason
-                );
-              } else if (memberCode === "Pedagang") {
-                console.log(modalContent.txID2);
-                console.log(modalContent.kuantitasBawangKg);
-                console.log(modalContent.txID3);
-                console.log(rejectReason);
-                rejectTrxByID(
-                  modalContent.txID2,
-                  modalContent.kuantitasBawangKg,
-                  modalContent.txID3,
-                  rejectReason
-                );
-              }
+              rejectTrxByID(modalContent.id);
+              // if (memberCode === "Petani") {
+              //   console.log(modalContent.benihAsetID);
+              //   console.log(modalContent.kuantitasBenihKg);
+              //   console.log(modalContent.txID1);
+              //   rejectTrxByID(
+              //     modalContent.benihAsetID,
+              //     modalContent.kuantitasBenihKg,
+              //     modalContent.txID1,
+              //     rejectReason
+              //   );
+              console.log("reject");
             }}
           >
             Tolak Transaksi
@@ -617,4 +511,4 @@ function InboxTrx(props) {
   );
 }
 
-export default InboxTrx;
+export default Keagenan;

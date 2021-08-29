@@ -27,9 +27,7 @@ export default function InputField(props) {
         error={meta.touched && meta.error && true}
         helperText={_renderHelperText()}
         InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">Kilogram</InputAdornment>
-          ),
+          endAdornment: <InputAdornment position="end">ton</InputAdornment>,
         }}
         {...field}
         {...rest}

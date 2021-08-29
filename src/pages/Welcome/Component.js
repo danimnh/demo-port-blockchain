@@ -22,6 +22,7 @@ function Welcome(props) {
   const handleChange = (event) => {
     setqrRead(event.target.value);
   };
+
   const refreshingLayout = props.refreshLayout;
   const matchSmallScreen = useMediaQuery("(max-width: 600px)");
   const classes = useStyles({ isSmallScreen: matchSmallScreen });
@@ -40,10 +41,7 @@ function Welcome(props) {
   }, []);
   return (
     <>
-      <Meta
-        title="Blockchain Supply Chain Bawang Merah IPB"
-        description="Blockchain Supply Chain IPB"
-      />
+      <Meta title="Blockchain Port IPB" description="Blockchain Port IPB" />
       <Container maxWidth="sm" className={classes.root}>
         <QrReader
           delay={300}
@@ -77,50 +75,6 @@ function Welcome(props) {
             <Typography>
               Anda terdaftar sebagai <strong>{props.user.orgName}</strong>
             </Typography>
-            {props.user.orgName === "Penangkar" && (
-              <>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component={RouterLink}
-                  to="/update_genesis"
-                  className={classes.button}
-                >
-                  Tambah Kuantitas Benih
-                </Button>
-                <Button
-                  variant="outlined"
-                  component={RouterLink}
-                  color="primary"
-                  to="/add_genesis"
-                  className={classes.button}
-                >
-                  Registrasi Benih Baru
-                </Button>
-              </>
-            )}
-            {props.user.orgName === "Petani" && (
-              <>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component={RouterLink}
-                  to="/tanam_benih"
-                  className={classes.button}
-                >
-                  Tanam Benih
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  component={RouterLink}
-                  to="/panen_bawang"
-                  className={classes.button}
-                >
-                  Panen Bawang
-                </Button>
-              </>
-            )}
           </>
         )}
 

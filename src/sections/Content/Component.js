@@ -12,7 +12,8 @@ import PanenBawang from "pages/Panen_Bawang";
 
 // import TransactionList from "pages/TransactionList";
 import SentTrx from "pages/Sent_Trx_Page";
-import InboxTrx from "pages/Inbox_Trx_Page";
+import Layanan from "pages/Layanan";
+import Keagenan from "pages/Keagenan";
 
 import Page from "components/Page";
 
@@ -76,8 +77,10 @@ function Content({
         />
         <Route
           exact
-          path="/create_transaction"
-          render={() => <AddTrx refreshLayout={refreshLayout} user={user} />}
+          path="/create/:listType"
+          render={(props) => (
+            <AddTrx refreshLayout={refreshLayout} user={user} {...props} />
+          )}
         />
         <Route
           exact
@@ -109,8 +112,13 @@ function Content({
         />
         <Route
           exact
-          path="/transactions/inbox/:listType"
-          render={(props) => <InboxTrx user={user} {...props} />}
+          path="/layanan/:listType"
+          render={(props) => <Layanan user={user} {...props} />}
+        />
+        <Route
+          exact
+          path="/keagenan/:listType"
+          render={(props) => <Keagenan user={user} {...props} />}
         />
         <Route
           exact

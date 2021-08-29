@@ -22,7 +22,7 @@ import {
   Paper,
   DialogContentText,
 } from "@material-ui/core";
-import CreateBenih from "constants/CreateBenih";
+import CreatePermohonanWarta from "constants/CreatePermohonanWarta";
 import GetUsernameByID from "constants/GetUsernameByID";
 import InvokeTrxPkr from "constants/InvokeTrxPkr";
 import InvokeTrxPtn from "constants/InvokeTrxPtn";
@@ -105,9 +105,7 @@ function DialogConfirmation({
               </TableHead>
               <TableBody>
                 <StyledTableRow>
-                  <StyledTableCell align="left">
-                    Username Pengirim
-                  </StyledTableCell>
+                  <StyledTableCell align="left">Pengirim</StyledTableCell>
                   <StyledTableCell align="right">{user}</StyledTableCell>
                 </StyledTableRow>
                 {rows.map((row) => (
@@ -121,15 +119,18 @@ function DialogConfirmation({
           </TableContainer>
         </DialogContent>
         <DialogActions>
-          {fcnName === "CreateBenih" ? (
+          {fcnName === "CreatePermohonanWarta" ? (
             <Button
               onClick={() => {
                 setIsLoading(true);
                 handleClose();
-                CreateBenih(modalContent, fcnName, user)
+                console.log(modalContent);
+                CreatePermohonanWarta(modalContent, fcnName, user)
                   .then((result) => {
                     console.log(result);
-                    history.go(0);
+                    setTxid(result);
+                    setQrVisible(true);
+                    // history.go(0);
                   })
                   .finally(() => {
                     setIsLoading(false);

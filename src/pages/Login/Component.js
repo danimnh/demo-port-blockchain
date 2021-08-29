@@ -77,11 +77,7 @@ function LoginPage(props) {
                     name="orgName"
                     label="orgName"
                     title="Login sebagai :"
-                    values={[
-                      "Agen Pelayaran",
-                      "Bidang/Seksi LaLa",
-                      "Syahbandar",
-                    ]}
+                    values={["Agen Pelayaran", "Bidang Lala", "Syahbandar"]}
                   />
                 </Grid>
               </Grid>
@@ -90,7 +86,7 @@ function LoginPage(props) {
                 className={classes.button}
                 disabled={
                   values.password.length < 6 ||
-                  values.username.length < 6 ||
+                  values.username.length < 4 ||
                   values.orgName < 6
                 }
                 variant="contained"

@@ -165,6 +165,7 @@ const Layout = () => {
           </Backdrop>
         </>
       )}
+      {/* debug login */}
       {isLoggedIn && (
         <Navigation
           handleLogout={handleLogout}
