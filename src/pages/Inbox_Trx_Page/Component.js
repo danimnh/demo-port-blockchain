@@ -344,17 +344,17 @@ function InboxTrx(props) {
           .finally(() => {
             setMemberCode(user.orgName);
             if (listType === "pending") {
-              // fetchAllInboxTrx("Penerima", user.username, "false").then(
-              //   (result) => {
-              //     let sorted = result;
-              //     console.log("INBOX PENDING");
-              //     const after = sorted.sort((a, b) =>
-              //       a.Record.createdAt > b.Record.createdAt ? -1 : 1
-              //     );
-              //     setInboxTrx([]);
-              //     setInboxTrx(after);
-              //   }
-              // );
+              fetchAllInboxTrx("Penerima", user.username, "false").then(
+                (result) => {
+                  let sorted = result;
+                  console.log("INBOX PENDING");
+                  const after = sorted.sort((a, b) =>
+                    a.Record.createdAt > b.Record.createdAt ? -1 : 1
+                  );
+                  setInboxTrx([]);
+                  setInboxTrx(after);
+                }
+              );
             } else if (listType === "confirmed") {
               // fetchAllInboxTrx("Penerima", user.username, "true").then(
               //   (result) => {
