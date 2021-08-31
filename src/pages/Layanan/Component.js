@@ -252,14 +252,7 @@ function Layanan(props) {
         ) : (
           <p>Tidak ada catatan</p>
         )}
-        {/* <Button
-          component={RouterLink}
-          to={"/layanan/" + listType + "/create"}
-          variant="contained"
-          color="primary"
-        >
-          Buat Permohonan Warta {listType}
-        </Button> */}
+
         {inboxTrx.map((trx) => {
           return (
             <>
@@ -368,7 +361,7 @@ function Layanan(props) {
               (modalContent.IsPKApproved === true) && (
               <Button
                 component={RouterLink}
-                to="/create/warta"
+                to={"/create/warta/" + modalContent.id}
                 onClick={() => {
                   console.log(modalContent.id);
                 }}

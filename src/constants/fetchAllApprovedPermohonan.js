@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetchAllAssets = async (username, trxType, isConfirmed) => {
+const fetchAllApprovedPermohonan = async () => {
   try {
     let config = {
       headers: {
@@ -8,27 +8,21 @@ const fetchAllAssets = async (username, trxType, isConfirmed) => {
       },
       params: {
         peer: "peer0.penangkar.example.com",
-        fcn: "GetBawangForQuery",
+        fcn: "GetDokumenForQuery",
         args:
           '["' +
-          '{\\"selector\\":{\\"username' +
-          trxType +
-          '\\":\\"' +
-          username +
-          '\\", \\"isConfirmed\\":' +
-          isConfirmed +
-          ',\\"kuantitasBawangKg\\":{\\"$gt\\":0}' +
+          '{\\"selector\\":{\\"IsPKApproved\\":' +
+          true +
+          ', \\"wartaID\\":\\"\\"' +
           "}}" +
           '"]',
       },
     };
     console.log(config.params.args);
     const resp = await axios.get(
-      "/sc/channels/mychannel/chaincodes/bawangmerah_cc",
+      "/sc/channels/mychannel/chaincodes/bcport_cc",
       config
     );
-
-    // await setGenesisList(resp.data.result);
     return resp.data.result;
   } catch (err) {
     console.log(err);
@@ -36,4 +30,4 @@ const fetchAllAssets = async (username, trxType, isConfirmed) => {
   }
 };
 
-export default fetchAllAssets;
+export default fetchAllApprovedPermohonan;

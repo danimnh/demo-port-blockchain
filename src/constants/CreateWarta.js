@@ -1,19 +1,17 @@
 import axios from "axios";
 
-const InvokeTrxPtn = async (values, fcnName) => {
+const CreateWarta = async (values, fcnName) => {
   const config = {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
     },
   };
-  console.log("fetchapi " + fcnName);
+
   let prevID = values.prevID;
   delete values["prevID"];
 
-  let arrayValue = JSON.stringify(values);
-
+  let arrayValue = [JSON.stringify(values)];
   let newArgs = [arrayValue, prevID];
-
   let body = {
     fcn: fcnName,
     peers: [
@@ -22,14 +20,16 @@ const InvokeTrxPtn = async (values, fcnName) => {
       "peer0.pengumpul.example.com",
       "peer0.pedagang.example.com",
     ],
-    chaincodeName: "bawangmerah_cc",
+    chaincodeName: "bcport_cc",
     channelName: "mychannel",
     args: newArgs,
   };
-  console.log(body.args);
   try {
+    console.log("values to be send");
+    console.log(body);
+
     const respBM = await axios.post(
-      "/sc/channels/mychannel/chaincodes/bawangmerah_cc",
+      "/sc/channels/mychannel/chaincodes/bcport_cc",
       body,
       config
     );
@@ -42,4 +42,4 @@ const InvokeTrxPtn = async (values, fcnName) => {
   }
 };
 
-export default InvokeTrxPtn;
+export default CreateWarta;

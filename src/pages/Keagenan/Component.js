@@ -310,14 +310,7 @@ function Keagenan(props) {
         ) : (
           <p>Tidak ada catatan</p>
         )}
-        {/* <Button
-          component={RouterLink}
-          to={"/layanan/" + listType + "/create"}
-          variant="contained"
-          color="primary"
-        >
-          Buat Permohonan Warta {listType}
-        </Button> */}
+
         {inboxTrx.map((trx) => {
           return (
             <>

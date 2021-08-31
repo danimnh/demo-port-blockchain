@@ -77,11 +77,18 @@ function Content({
         />
         <Route
           exact
+          path="/create/:listType/:prevID"
+          render={(props) => (
+            <AddTrx refreshLayout={refreshLayout} user={user} {...props} />
+          )}
+        />
+        <Route
           path="/create/:listType"
           render={(props) => (
             <AddTrx refreshLayout={refreshLayout} user={user} {...props} />
           )}
         />
+
         <Route
           exact
           path="/add_genesis"

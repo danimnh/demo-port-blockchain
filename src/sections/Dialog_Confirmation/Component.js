@@ -23,11 +23,13 @@ import {
   DialogContentText,
 } from "@material-ui/core";
 import CreatePermohonanWarta from "constants/CreatePermohonanWarta";
+import CreateWarta from "constants/CreateWarta";
+
 import GetUsernameByID from "constants/GetUsernameByID";
-import InvokeTrxPkr from "constants/InvokeTrxPkr";
-import InvokeTrxPtn from "constants/InvokeTrxPtn";
-import InvokeTrxPpl from "constants/InvokeTrxPpl";
-import PlantBenih from "constants/PlantBenih";
+// import InvokeTrxPkr from "constants/InvokeTrxPkr";
+// import InvokeTrxPtn from "constants/InvokeTrxPtn";
+// import InvokeTrxPpl from "constants/InvokeTrxPpl";
+// import PlantBenih from "constants/PlantBenih";
 import ConvertBawang from "constants/ConvertBawang";
 
 import AddBawangKuantitasByID from "constants/AddBawangKuantitasByID";
@@ -140,205 +142,19 @@ function DialogConfirmation({
             >
               Konfirmasi
             </Button>
-          ) : fcnName === "AddBenihKuantitasByID" ? (
+          ) : fcnName === "CreateWarta" ? (
             <Button
               onClick={() => {
-                setIsLoading(true);
-                handleClose();
-                AddBawangKuantitasByID(modalContent, fcnName)
+                CreateWarta(modalContent, fcnName, user)
                   .then((result) => {
                     console.log(result);
-                    history.go(0);
-                  })
-                  .finally(() => {
-                    setIsLoading(false);
-                  });
-              }}
-              variant="outlined"
-            >
-              Konfirmasi
-            </Button>
-          ) : fcnName === "CreateTrxBawangByPenangkar" ? (
-            <Button
-              onClick={() => {
-                setIsLoading(true);
-                handleClose();
-                console.log(modalContent);
-                GetUsernameByID(modalContent.usernamePenerima, "Petani").then(
-                  (result) => {
-                    if (result === undefined) {
-                      setIsLoading(false);
-                      alert(
-                        "Username Penerima " +
-                          modalContent.usernamePenerima +
-                          " tidak ditemukan"
-                      );
-                      history.go(0);
-                    } else {
-                      InvokeTrxPkr(modalContent, fcnName, user)
-                        .then((result) => {
-                          if (result !== undefined) {
-                            setTxid(result);
-                            setQrVisible(true);
-                            console.log(result);
-                          } else {
-                            alert("Kuantitas tidak mencukupi");
-                            setIsLoading(false);
-                            history.go(0);
-                          }
-                        })
-                        .finally(() => {
-                          setIsLoading(false);
-                        });
-                    }
-                  }
-                );
-              }}
-              variant="outlined"
-            >
-              Konfirmasi
-            </Button>
-          ) : fcnName === "PlantBenih" ? (
-            <Button
-              onClick={() => {
-                setIsLoading(true);
-                handleClose();
-                PlantBenih(modalContent, fcnName)
-                  .then((result) => {
-                    if (result !== undefined) {
-                      setTxid(result);
-                      setQrVisible(true);
-                      console.log(result);
-                    } else {
-                      alert("Pencatatan Gagal");
-                      setIsLoading(false);
-                      history.go(0);
-                    }
-                  })
-                  .finally(() => {
-                    setIsLoading(false);
-                  });
-              }}
-              variant="outlined"
-            >
-              Konfirmasi
-            </Button>
-          ) : fcnName === "HarvestBawang" ? (
-            <Button
-              onClick={() => {
-                setIsLoading(true);
-                handleClose();
-                ConvertBawang(modalContent, fcnName)
-                  .then((result) => {
-                    if (result !== undefined) {
-                      setTxid(result);
-                      setQrVisible(true);
-                      console.log(result);
-                    } else {
-                      console.log(result);
-                      alert("Pencatatan Gagal");
-                      setIsLoading(false);
-                      history.go(0);
-                    }
-                  })
-                  .finally(() => {
-                    setIsLoading(false);
-                  });
-              }}
-              variant="outlined"
-            >
-              Konfirmasi
-            </Button>
-          ) : fcnName === "AddBawangKuantitasByID" ? (
-            <Button
-              onClick={() => {
-                setIsLoading(true);
-                handleClose();
-                AddBawangKuantitasByID(modalContent, fcnName)
-                  .then((result) => {
-                    console.log(result);
+                    setTxid(result);
+                    setQrVisible(true);
                     // history.go(0);
                   })
                   .finally(() => {
                     setIsLoading(false);
                   });
-              }}
-              variant="outlined"
-            >
-              Konfirmasi
-            </Button>
-          ) : fcnName === "UpdateBawangTrxByPetani" ? (
-            <Button
-              onClick={() => {
-                setIsLoading(true);
-                handleClose();
-                GetUsernameByID(
-                  modalContent.usernamePenerima,
-                  "Pengumpul"
-                ).then((result) => {
-                  if (result === undefined) {
-                    setIsLoading(false);
-                    alert(
-                      "Username Penerima " +
-                        modalContent.usernamePenerima +
-                        " tidak ditemukan"
-                    );
-                    history.go(0);
-                  } else {
-                    InvokeTrxPtn(modalContent, fcnName, user)
-                      .then((result) => {
-                        if (result !== undefined) {
-                          setTxid(result);
-                          setQrVisible(true);
-                        } else {
-                          alert("Kuantitas tidak mencukupi");
-                          setIsLoading(false);
-                          // history.go(0);
-                        }
-                      })
-                      .finally(() => {
-                        setIsLoading(false);
-                      });
-                  }
-                });
-              }}
-              variant="outlined"
-            >
-              Konfirmasi
-            </Button>
-          ) : fcnName === "UpdateBawangTrxByPengumpul" ? (
-            <Button
-              onClick={() => {
-                setIsLoading(true);
-                handleClose();
-                GetUsernameByID(modalContent.usernamePenerima, "Pedagang").then(
-                  (result) => {
-                    if (result === undefined) {
-                      setIsLoading(false);
-                      alert(
-                        "Username Penerima " +
-                          modalContent.usernamePenerima +
-                          " tidak ditemukan"
-                      );
-                      history.go(0);
-                    } else {
-                      InvokeTrxPpl(modalContent, fcnName, user)
-                        .then((result) => {
-                          if (result !== undefined) {
-                            setTxid(result);
-                            setQrVisible(true);
-                          } else {
-                            alert("Kuantitas tidak mencukupi");
-                            setIsLoading(false);
-                            // history.go(0);
-                          }
-                        })
-                        .finally(() => {
-                          setIsLoading(false);
-                        });
-                    }
-                  }
-                );
               }}
               variant="outlined"
             >

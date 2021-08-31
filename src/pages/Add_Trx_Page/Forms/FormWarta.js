@@ -2,6 +2,7 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import InputField from "../../Sign_Up/FormFields/InputField";
 import InputKilogram from "../../Sign_Up/FormFields/InputKilogram";
+import InputEndString from "pages/Sign_Up/FormFields/InputEnd";
 // import InputRupiah from "../../Sign_Up/FormFields/InputRupiah";
 
 export default function FormWarta(props) {
@@ -100,43 +101,58 @@ export default function FormWarta(props) {
           <InputKilogram name={gtTon.name} label={gtTon.label} fullWidth />
         </Grid>
         <Grid item xs={12}>
-          <InputField name={dwtTon.name} label={dwtTon.label} fullWidth />
+          <InputEndString
+            name={dwtTon.name}
+            label={dwtTon.label}
+            endString="ton"
+            fullWidth
+          />
         </Grid>
         <Grid item xs={12}>
-          <InputField name={loaMeter.name} label={loaMeter.label} fullWidth />
+          <InputEndString
+            name={loaMeter.name}
+            label={loaMeter.label}
+            endString="meter"
+            fullWidth
+          />
         </Grid>
         <Grid item xs={12}>
-          <InputField
+          <InputEndString
             name={lebarMeter.name}
             label={lebarMeter.label}
+            endString="meter"
             fullWidth
           />
         </Grid>
         <Grid item xs={12}>
-          <InputField
+          <InputEndString
             name={draftMaxMeter.name}
             label={draftMaxMeter.label}
+            endString="meter"
             fullWidth
           />
         </Grid>
         <Grid item xs={12}>
-          <InputField
+          <InputEndString
             name={drafDepanMeter.name}
             label={drafDepanMeter.label}
+            endString="meter"
             fullWidth
           />
         </Grid>
         <Grid item xs={12}>
-          <InputField
+          <InputEndString
             name={drafBelakangMeter.name}
             label={drafBelakangMeter.label}
+            endString="meter"
             fullWidth
           />
         </Grid>
         <Grid item xs={12}>
-          <InputField
+          <InputEndString
             name={ketinggianUdaraMeter.name}
             label={ketinggianUdaraMeter.label}
+            endString="meter"
             fullWidth
           />
         </Grid>
@@ -224,7 +240,11 @@ export default function FormWarta(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <InputField name={tanggalTiba.name} label={telpCSO.label} fullWidth />
+          <InputField
+            name={tanggalTiba.name}
+            label={tanggalTiba.label}
+            fullWidth
+          />
         </Grid>
         <Grid item xs={12}>
           <InputField
