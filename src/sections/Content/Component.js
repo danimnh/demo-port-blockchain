@@ -5,15 +5,12 @@ import SignUpPage from "pages/Sign_Up";
 import ProductPage from "pages/Product_Page";
 import ProductDetailPage from "pages/Product_Details_Page";
 import AddTrx from "pages/Add_Trx_Page";
-import AddGenesis from "pages/Add_Genesis_Bawang";
-import UpdateGenesis from "pages/Update_Genesis";
-import ConvertGenesis from "pages/Convert_Genesis_Bawang";
-import PanenBawang from "pages/Panen_Bawang";
 
 // import TransactionList from "pages/TransactionList";
 import SentTrx from "pages/Sent_Trx_Page";
 import Layanan from "pages/Layanan";
 import Keagenan from "pages/Keagenan";
+import SPM from "pages/SPM";
 
 import Page from "components/Page";
 
@@ -91,34 +88,6 @@ function Content({
 
         <Route
           exact
-          path="/add_genesis"
-          render={() => (
-            <AddGenesis refreshLayout={refreshLayout} user={user} />
-          )}
-        />
-        <Route
-          exact
-          path="/update_genesis"
-          render={() => (
-            <UpdateGenesis refreshLayout={refreshLayout} user={user} />
-          )}
-        />
-        <Route
-          exact
-          path="/tanam_benih"
-          render={() => (
-            <ConvertGenesis refreshLayout={refreshLayout} user={user} />
-          )}
-        />
-        <Route
-          exact
-          path="/panen_bawang"
-          render={() => (
-            <PanenBawang refreshLayout={refreshLayout} user={user} />
-          )}
-        />
-        <Route
-          exact
           path="/layanan/:listType"
           render={(props) => <Layanan user={user} {...props} />}
         />
@@ -126,6 +95,11 @@ function Content({
           exact
           path="/keagenan/:listType"
           render={(props) => <Keagenan user={user} {...props} />}
+        />
+        <Route
+          exact
+          path="/spm/:listType"
+          render={(props) => <SPM user={user} {...props} />}
         />
         <Route
           exact

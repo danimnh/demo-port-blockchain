@@ -127,6 +127,7 @@ function AddTrx(props) {
       values.telpCSO = parseInt(values.telpCSO);
       values.usernamePenerima = "Bidang Lala, Syahbandar";
       values.wartaType = selectedAsset.wartaType;
+      values.IsPKApproved = true;
     }
 
     _submitForm(values, actions);

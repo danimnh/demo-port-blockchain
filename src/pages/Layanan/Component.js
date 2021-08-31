@@ -3,7 +3,6 @@ import { Link as RouterLink } from "react-router-dom";
 // import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import moment from "moment";
-import NumberFormat from "react-number-format";
 
 import {
   Grid,
@@ -78,37 +77,53 @@ function Layanan(props) {
     createData("Status", modalContent.IsPKApproved ? "Disetujui" : "Tertunda"),
   ];
   const rowsWarta = [
-    createData("Username Pengirim", modalContent.usernamePengirim),
-    createData("Alamat Pengirim", modalContent.alamatPengirim),
-    createData("Username Penerima", modalContent.usernamePenerima),
-    createData("Alamat Penerima", modalContent.alamatPenerima),
-    createData("Kuantitas Bawang", modalContent.kuantitasBawangKg + " Kg"),
+    createData("Diteruskan kepada", "Bidang Lala & Syahbandar"),
+    createData("Jenis Warta", modalContent.wartaType),
     createData(
-      "Harga Bawang",
-      <NumberFormat
-        displayType="text"
-        value={modalContent.hargaBawangPerKg}
-        decimalSeparator={","}
-        thousandSeparator={"."}
-        isNumericString
-        prefix="Rp. "
-      />
+      "Bidang Lala",
+      modalContent.IsPKKApproved ? "Disetujui" : "Tertunda"
     ),
     createData(
-      "Tanggal Transaksi",
-      moment.unix(modalContent.createdAt).format("LLL")
+      "Syahbandar",
+      modalContent.IsSPMApproved ? "Disetujui" : "Tertunda"
     ),
-    createData("Ukuran Umbi", modalContent.ukuranUmbi),
-    createData("Pupuk", modalContent.pupuk),
-    createData("Pestisida", modalContent.pestisida),
-    createData("Kadar Air (%)", modalContent.kadarAirPersen + "%"),
-    createData("Perlakuan", modalContent.perlakuan),
-    createData("Produktivitas", modalContent.produktivitas),
+    createData("No. Layanan", modalContent.noLayanan),
+    createData("Tanda Pendaftaran Kapal", modalContent.tandaPendaftaranKapal),
+    createData("Call Sign", modalContent.callSign),
+    createData("Bendera", modalContent.bendera),
+    createData("No. Voyage", modalContent.noVoyage),
+    createData("Jenis Kapal", modalContent.jenisKapal),
+    createData("Tahun Pembuatan", modalContent.tahunPembuatan),
+    createData("No. Inmarsat", modalContent.noInmarsat),
+    createData("Nama CSO", modalContent.namaCSO),
+    createData("Telp CSO", "0" + modalContent.telpCSO),
+    createData("GT (Ton)", modalContent.gtTon),
+    createData("DWT (Ton)", modalContent.dwtTon),
+    createData("LOA (Meter)", modalContent.loaMeter),
+    createData("Lebar Meter", modalContent.lebarMeter),
+    createData("Draft Max Meter", modalContent.drafMaxMeter),
+    createData("Draf Depan Meter", modalContent.drafDepanMeter),
+    createData("Draf Belakang Meter", modalContent.drafBelakangMeter),
+    createData("Ketinggian Udara Meter", modalContent.ketinggianUdaraMeter),
+    createData("Domisili Keagenan", modalContent.domisiliKeagenan),
+    createData("Jenis Pelayaran", modalContent.jenisPelayatan),
+    createData("Minimum Safe Manning", modalContent.minimumSafeManning),
+    createData("Tenaga Pendorong", modalContent.tenagaPendorong),
+    createData("Nama Operator", modalContent.namaOperator),
+    createData("Siupal Operator", modalContent.siupalOperator),
+    createData("Alamat Operator", modalContent.alamatOperator),
+    createData("Nama Agen", modalContent.namaAgen),
+    createData("PJ Agen", modalContent.pjAgen),
+    createData("Siupal Agen", modalContent.siupalAgen),
+    createData("Alamat Agen", modalContent.alamatAgen),
+    createData("Pelabuhan Asal", modalContent.pelabuhanAsal),
 
-    createData(
-      "Status",
-      modalContent.isConfirmed ? "Terkonfirmasi oleh Penerima" : "Tertunda"
-    ),
+    createData("Tanggal Tiba", modalContent.tanggalTiba),
+    createData("Lokasi Labuh", modalContent.tugBoat),
+    createData("Tug Boat", modalContent.tugBoat),
+    createData("Jenis Trayek", modalContent.jenisTrayek),
+    createData("No Trayek", modalContent.noTrayek),
+    createData("Lintasan", modalContent.lintasan),
   ];
 
   const handleClose = () => {
@@ -280,16 +295,30 @@ function Layanan(props) {
                       style={{ justifyContent: "space-between" }}
                     >
                       <Grid>
-                        <Typography className={classes.title}>
-                          Permohonan Warta
-                        </Typography>
+                        {trx.Record.wartaID === "" ? (
+                          <Typography className={classes.title}>
+                            Permohonan Warta
+                          </Typography>
+                        ) : (
+                          <Typography className={classes.title}>
+                            Warta {trx.Record.wartaType}
+                          </Typography>
+                        )}
 
                         <Typography>
                           {moment.unix(trx.Record.createdAt).format("LLL")}
                         </Typography>
-                        <Typography>
-                          {trx.Record.IsPKApproved ? "Disetujui" : "Tertunda"}
-                        </Typography>
+                        {trx.Record.wartaID === "" ? (
+                          <Typography>
+                            {trx.Record.IsPKApproved ? "Disetujui" : "Tertunda"}
+                          </Typography>
+                        ) : (
+                          <Typography>
+                            {trx.Record.IsPKApproved & trx.Record.IsPKKApproved
+                              ? "Disetujui"
+                              : "Tertunda"}
+                          </Typography>
+                        )}
                       </Grid>
                       <QRCode value={trx.Record.id} size={52} />
                     </Grid>
@@ -357,8 +386,7 @@ function Layanan(props) {
             >
               Tutup
             </Button>
-            {(modalContent.wartaID === "") &
-              (modalContent.IsPKApproved === true) && (
+            {modalContent.wartaID === "" && modalContent.IsPKApproved === true && (
               <Button
                 component={RouterLink}
                 to={"/create/warta/" + modalContent.id}
@@ -409,16 +437,7 @@ function Layanan(props) {
             color="secondary"
             onClick={() => {
               rejectTrxByID(modalContent.id);
-              // if (memberCode === "Petani") {
-              //   console.log(modalContent.benihAsetID);
-              //   console.log(modalContent.kuantitasBenihKg);
-              //   console.log(modalContent.txID1);
-              //   rejectTrxByID(
-              //     modalContent.benihAsetID,
-              //     modalContent.kuantitasBenihKg,
-              //     modalContent.txID1,
-              //     rejectReason
-              //   );
+
               console.log("reject");
             }}
           >

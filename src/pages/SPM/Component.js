@@ -73,14 +73,14 @@ function Keagenan(props) {
     createData("Jenis Warta", modalContent.wartaType),
     createData("Trayek", modalContent.trayek),
     createData("No. RPK/PKKA/PPKN", modalContent.noRPK),
-    createData("Status", modalContent.IsPKApproved ? "Disetujui" : "Tertunda"),
+    createData("Status", modalContent.IsSPMApproved ? "Disetujui" : "Tertunda"),
   ];
   const rowsWarta = [
     createData("Diteruskan kepada", "Bidang Lala & Syahbandar"),
     createData("Jenis Warta", modalContent.wartaType),
     createData(
       "Status Dokumen",
-      modalContent.isPKKVerified ? "Disetujui" : "Tertunda"
+      modalContent.IsSPMApproved ? "Disetujui" : "Tertunda"
     ),
     createData("No. Layanan", modalContent.noLayanan),
     createData("Tanda Pendaftaran Kapal", modalContent.tandaPendaftaranKapal),
@@ -150,7 +150,7 @@ function Keagenan(props) {
     },
   }))(TableRow);
 
-  const fetchAllKeagenanPendingTrx = async () => {
+  const fetchAllSPMPendingTrx = async () => {
     try {
       let config = {
         headers: {
@@ -161,7 +161,7 @@ function Keagenan(props) {
           fcn: "GetDokumenForQuery",
           args:
             '["' +
-            '{\\"selector\\":{\\"IsPKKVerified\\":' +
+            '{\\"selector\\":{\\"IsSPMApproved\\":' +
             "false" +
             "}}" +
             '"]',
@@ -181,7 +181,7 @@ function Keagenan(props) {
     }
   };
 
-  const fetchAllKeagenanApprovedTrx = async () => {
+  const fetchAllSPMApprovedTrx = async () => {
     try {
       let config = {
         headers: {
@@ -192,7 +192,7 @@ function Keagenan(props) {
           fcn: "GetDokumenForQuery",
           args:
             '["' +
-            '{\\"selector\\":{\\"IsPKApproved\\":' +
+            '{\\"selector\\":{\\"IsSPMApproved\\":' +
             "true" +
             "}}" +
             '"]',
@@ -248,7 +248,7 @@ function Keagenan(props) {
       console.log(err);
     }
   };
-  const confirmTrxByID = async (trxId) => {
+  const confirmSPMByID = async (trxId) => {
     const config = {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -256,7 +256,7 @@ function Keagenan(props) {
     };
 
     let body = {
-      fcn: "ApprovePermohonanKeagenan",
+      fcn: "ApproveSPM",
       peers: [
         "peer0.penangkar.example.com",
         "peer0.petani.example.com",
@@ -280,41 +280,10 @@ function Keagenan(props) {
       console.log(err);
     }
   };
-  const confirmWartaByID = async (trxId) => {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    };
 
-    let body = {
-      fcn: "ApprovePKK",
-      peers: [
-        "peer0.penangkar.example.com",
-        "peer0.petani.example.com",
-        "peer0.pengumpul.example.com",
-        "peer0.pedagang.example.com",
-      ],
-      chaincodeName: "bcport_cc",
-      channelName: "mychannel",
-      args: [trxId],
-    };
-    try {
-      const resp = await axios.post(
-        "/sc/channels/mychannel/chaincodes/bcport_cc",
-        body,
-        config
-      );
-      console.log(resp);
-      await alert("Transaksi berhasil dikonfirmasi");
-      history.go(0);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   useEffect(() => {
     if (listType === "pending") {
-      fetchAllKeagenanPendingTrx(listType).then((result) => {
+      fetchAllSPMPendingTrx(listType).then((result) => {
         let sorted = result;
         const after = sorted.sort((a, b) =>
           a.Record.createdAt > b.Record.createdAt ? -1 : 1
@@ -323,7 +292,7 @@ function Keagenan(props) {
         setInboxTrx(after);
       });
     } else if (listType === "approved") {
-      fetchAllKeagenanApprovedTrx(listType).then((result) => {
+      fetchAllSPMApprovedTrx(listType).then((result) => {
         let sorted = result;
         const after = sorted.sort((a, b) =>
           a.Record.createdAt > b.Record.createdAt ? -1 : 1
@@ -339,7 +308,7 @@ function Keagenan(props) {
     <>
       <Meta title="TransactionList" description="TransactionList" />
       <Container maxWidth="sm" className={classes.root}>
-        <Typography variant="h6">Keagenan</Typography>
+        <Typography variant="h6">SPM</Typography>
 
         {props.match.params.listType === "pending" ? (
           <Typography variant="h6">Belum diproses</Typography>
@@ -365,11 +334,11 @@ function Keagenan(props) {
                   onClick={() => {
                     console.log(trx.Record);
                     setModalContent(trx.Record);
-                    if (trx.Record.wartaID !== "") {
-                      setRowsType("Warta");
-                    } else {
-                      setRowsType("Permohonan");
-                    }
+                    // if (trx.Record.wartaID !== "") {
+                    //   setRowsType("Warta");
+                    // } else {
+                    setRowsType("Warta");
+
                     setVisible(true);
                   }}
                 >
@@ -395,11 +364,13 @@ function Keagenan(props) {
                         </Typography>
                         {trx.Record.wartaID === "" ? (
                           <Typography>
-                            {trx.Record.IsPKApproved ? "Disetujui" : "Tertunda"}
+                            {trx.Record.IsSPMApproved
+                              ? "Disetujui"
+                              : "Tertunda"}
                           </Typography>
                         ) : (
                           <Typography>
-                            {trx.Record.IsPKKVerified
+                            {trx.Record.IsSPMApproved
                               ? "Disetujui"
                               : "Tertunda"}
                           </Typography>
@@ -486,12 +457,7 @@ function Keagenan(props) {
                 <Button
                   onClick={() => {
                     console.log(modalContent.id);
-                    if (rowsType === "Permohonan") {
-                      confirmTrxByID(modalContent.id);
-                    } else if (rowsType === "Warta") {
-                      console.log("confim warta");
-                      confirmWartaByID(modalContent.id);
-                    }
+                    confirmSPMByID(modalContent.id);
                   }}
                   variant="contained"
                   color="primary"

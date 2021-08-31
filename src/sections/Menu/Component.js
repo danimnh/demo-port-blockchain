@@ -166,7 +166,7 @@ function Menu({
                   selected={selectedIndex === 4}
                   onClick={() => handleListItemClick(4)}
                   component={RouterLink}
-                  to="/transactions/sent/pending"
+                  to="/spm/pending"
                 >
                   <ListItemText primary="Belum diproses" />
                 </ListItem>
@@ -176,7 +176,7 @@ function Menu({
                   selected={selectedIndex === 5}
                   onClick={() => handleListItemClick(5)}
                   component={RouterLink}
-                  to="/transactions/sent/confirmed"
+                  to="/spm/approved"
                 >
                   <ListItemText primary="Sudah diproses" />
                 </ListItem>
