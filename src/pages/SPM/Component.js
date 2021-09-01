@@ -163,6 +163,7 @@ function Keagenan(props) {
             '["' +
             '{\\"selector\\":{\\"IsSPMApproved\\":' +
             "false" +
+            ',\\"wartaID\\":{\\"$ne\\":\\"\\"}' +
             "}}" +
             '"]',
         },
@@ -194,6 +195,7 @@ function Keagenan(props) {
             '["' +
             '{\\"selector\\":{\\"IsSPMApproved\\":' +
             "true" +
+            ',\\"wartaID\\":{\\"$ne\\":\\"\\"}' +
             "}}" +
             '"]',
         },

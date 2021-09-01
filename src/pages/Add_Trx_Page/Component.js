@@ -121,10 +121,9 @@ function AddTrx(props) {
   }
   function _handleSubmit(values, actions) {
     if (listType === "permohonan") {
-      values.usernamePenerima = "Bidang LaLa";
+      values.usernamePenerima = "Bidang Lala";
     } else if (listType === "warta") {
       values.prevID = prevID;
-      values.telpCSO = parseInt(values.telpCSO);
       values.usernamePenerima = "Bidang Lala, Syahbandar";
       values.wartaType = selectedAsset.wartaType;
       values.IsPKApproved = true;

@@ -81,7 +81,7 @@ function Layanan(props) {
     createData("Jenis Warta", modalContent.wartaType),
     createData(
       "Bidang Lala",
-      modalContent.IsPKKApproved ? "Disetujui" : "Tertunda"
+      modalContent.IsPKKVerified ? "Disetujui" : "Tertunda"
     ),
     createData(
       "Syahbandar",
@@ -279,6 +279,14 @@ function Layanan(props) {
                 <CardActionArea
                   onClick={() => {
                     console.log(trx.Record);
+
+                    console.log(trx.Record.IsSPMApproved);
+                    console.log(trx.Record.IsPKKVerified);
+
+                    console.log(
+                      trx.Record.IsSPMApproved & trx.Record.IsPKKVerified
+                    );
+
                     setModalContent(trx.Record);
                     if (trx.Record.wartaID !== "") {
                       setRowsType("Warta");
@@ -314,7 +322,7 @@ function Layanan(props) {
                           </Typography>
                         ) : (
                           <Typography>
-                            {trx.Record.IsPKApproved & trx.Record.IsPKKApproved
+                            {trx.Record.IsSPMApproved & trx.Record.IsPKKVerified
                               ? "Disetujui"
                               : "Tertunda"}
                           </Typography>
